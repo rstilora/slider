@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>|| Slider ||</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+
+    <!--[if IE]>
+			<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+    <style>
+        *, ul, li {
+            padding: 0px;
+            margin: 0px;
+            list-style: none;
+        }
+
+        img {
+            max-width: 100%;
+        }
+
+        body {
+            position: relative;
+        }
+
+        #slider {
+            width: 100%;
+            max-width: 1600px;
+            margin: 0 auto 0;
+            /*position: relative;*/
+        }
+
+            #slider ul li {
+                opacity: 0;
+                height: 100%;
+                position: absolute;
+                width: 100%;
+                top: 0px;
+                transition: all 1s ease;
+            }
+
+                #slider ul li img {
+                    max-width: 100%;
+                }
+
+                #slider ul li.active {
+                    opacity: 1;
+                    transition: all 1s ease;
+                }
+
+
+        .s_button {
+            display:none;
+            position: absolute;
+            bottom: 0px;
+            z-index: 9;
+            width: 100%;
+            top:47%;
+           
+        }
+        #slider:hover .s_button{
+        display:block;
+        }
+
+            .s_button a {
+                display: inline-block;
+                text-indent: -9999px;
+                height: 30px;
+                width: 30px;
+            }
+
+            .s_button #nxt {
+                background: url(images/next-i.png) center center no-repeat;
+                background-size: cover;
+                float: right;
+            }
+
+            .s_button #prv {
+                background: url(images/prv-i.png) center center no-repeat;
+                background-size: cover;
+                float: left;
+            }
+
+        .slider-caption {
+            position: absolute;
+            bottom: 15px;
+            width: 100%;
+            text-align: center;
+            z-index: 9;
+        }
+
+            .slider-caption span {
+                text-indent: -10000px;
+                height: 13px;
+                width: 13px;
+                border-radius: 50%;
+                display: inline-block;
+                background: #808080;
+                margin: 5px;
+                cursor: pointer;
+            }
+
+                .slider-caption span.active {
+                    background: #ff6a00;
+                }
+    </style>
+</head>
+<body>
+    <div id="slider">
+
+        <ul>
+            <li class="active">
+
+                <img src="images/slider1.jpg" alt="slider" /></li>
+            <li>
+                <img src="images/slider2.jpg" alt="slider" /></li>
+            <li>
+                <img src="images/slider3.jpg" alt="slider" /></li>
+
+
+
+        </ul>
+        <div class="s_button">
+
+            <a id="prv" href="javascript:void(0);">Prev</a>
+            <a id="nxt" href="javascript:void(0);">Next</a>
+
+        </div>
+        <div class="slider-caption">
+        </div>
+    </div>
+
+    <script>
+
+        //******    || Auto Silder ||    *******// 
+
+        document.getElementById("slider").style.height = window.innerHeight + 'px';
+
+        var i = 0;
+        var list = document.getElementsByTagName('li');
+        var totalList = list.length;
+
+        var cap = document.getElementsByTagName('span');
+        var capList = cap.length;
+
+
+
+        document.getElementById('nxt').onclick = function () { slideNext(); };
+        document.getElementById('prv').onclick = function () { slidePrev(); };
+
+
+
+        // Auto Slide
+        setInterval(function () {
+            slideNext();
+            //console.log('Auto ' + i);
+        }, 9000);
+
+
+        // Slider Caption
+        sliderCaption();
+
+
+        // Slider Next Slide
+
+        function slideNext() {
+
+            i++;
+            if (i != totalList) {
+                //console.log('click '+ i )
+                list[i].classList.add('active');
+                list[i - 1].classList.remove('active');
+
+                cap[i].classList.add('active');
+                cap[i - 1].classList.remove('active');
+            }
+            else {
+                i = 0;
+                list[totalList - 1].classList.remove('active');
+                list[i].classList.add('active');
+
+
+                cap[totalList - 1].classList.remove('active');
+                cap[i].classList.add('active');
+            }
+
+        }
+
+
+        // Slider Prev Slide
+
+        function slidePrev() {
+
+            list[i].classList.remove('active');
+            cap[i].classList.remove('active');
+
+            if (i != 0) {
+                i--;
+                list[i].classList.add('active');
+                //console.log('PR click ' + i)
+                cap[i].classList.add('active');
+            }
+
+            else {
+                list[i].classList.remove('active');
+                cap[i].classList.remove('active');
+                i = totalList - 1;
+                list[i].classList.add('active');
+                cap[i].classList.add('active');
+            }
+
+        }
+
+        function sliderCaption() {
+
+            for (n = 0; n < totalList; n++) {
+                $('.slider-caption').append('<span data-index="' + n + '">' + (n + 1) + '</span>')
+
+            }
+            $('span:first-child').addClass('active')
+
+
+        }
+
+
+        $('span').click(function () {
+            var a = $(this).attr("data-index");
+            console.log(a);
+
+            list[i].classList.remove('active');
+            cap[i].classList.remove('active');
+            i = a;
+            list[i].classList.add('active');
+            cap[i].classList.add('active');
+        });
+
+
+
+
+
+    </script>
+
+
+</body>
+</html>
